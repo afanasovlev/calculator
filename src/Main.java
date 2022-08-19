@@ -8,108 +8,53 @@ public class Main {
     }
 
     public static String calc(String input){
-        String result;
         Calc c = new Calc();
 
-        if(input.length()>3){
-                throw new IllegalStateException();
-        }
-
         String[] aa = input.split(" ");
-
-        try {
-            c.a = Integer.parseInt(aa[0]);
-            c.arabic1 = true;
-        } catch (NumberFormatException e) {
-            c.arabic1 = false;
-            switch (aa[0]){
-                case "I" -> c.a = 1;
-                case "II" -> c.a = 2;
-                case "III" -> c.a = 3;
-                case "IV" -> c.a = 4;
-                case "V" -> c.a = 5;
-                case "VI" -> c.a = 6;
-                case "VII" -> c.a = 7;
-                case "VIII" -> c.a = 8;
-                case "IX" -> c.a = 9;
-                case "X" -> c.a = 10;
-                default -> throw e;
-            }
+        if(aa.length  > 3){
+            throw new IllegalStateException();
         }
-        try{
-            c.b = Integer.parseInt(aa[2]);
-            c.arabic2 = true;
-        } catch (NumberFormatException e) {
-            c.arabic2 = false;
-            switch (aa[2]){
-                case "I" -> c.b = 1;
-                case "II" -> c.b = 2;
-                case "III" -> c.b = 3;
-                case "IV" -> c.b = 4;
-                case "V" -> c.b = 5;
-                case "VI" -> c.b = 6;
-                case "VII" -> c.b = 7;
-                case "VIII" -> c.b = 8;
-                case "IX" -> c.b = 9;
-                case "X" -> c.b = 10;
-                default -> throw e;
-            }
-        }
-        if (c.arabic1^c.arabic2){
-            try {
-                throw new Exception();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        c.operation = aa[1];
-        if (c.a > 0 & c.a <= 10 & c.b > 0 & c.b <= 10) {
-            switch (c.operation) {
-                case "+" -> {
-                    if (c.arabic1 & c.arabic2) {
-                        result = Integer.toString(c.sum());
-                    } else {
-                        result = convert(c.sum());
-                    }
-                    ;
+        if(aa.length == 1){
+            for (char v : input.toCharArray()
+                 ) {
+                if(v == '+'){
+                    c.operation = String.valueOf(v);
                 }
-                case "-" -> {
-                        if (c.arabic1 & c.arabic2) {
-                            result = Integer.toString(c.deduct());
-                        } else {
-                            result = convert(c.deduct());
-                        }
-                        ;
-                    }
-                case "/" -> {
-                        if (c.arabic1 & c.arabic2) {
-                            result = Integer.toString(c.division());
-                        } else {
-                            result = convert(c.division());
-                        }
-                        ;
-                    }
-                case "*" -> {
-                        if (c.arabic1 & c.arabic2) {
-                            result = Integer.toString(c.mult());
-                        } else {
-                            result = convert(c.mult());
-                        }
-                        ;
-                    }
-                default -> throw new IllegalStateException("Unexpected value: " + c.operation);
+                if(v == '-'){
+                    c.operation = String.valueOf(v);
+                }
+                if(v == '*'){
+                    c.operation = String.valueOf(v);
+                }
+                if(v == '/'){
+                    c.operation = String.valueOf(v);
+                }
             }
-        } else {
-            try {
-                    throw new Exception();
-                } catch (Exception e) {
-                throw new IllegalStateException();
-            }
+           aa = input.split("[+\\-*/]");
+            return c.calculation(aa[0],aa[1],c.operation);
         }
-        return result;
-    }
+        if(aa.length == 2){
+            for (char v : input.toCharArray()
+            ) {
+                if(v == '+'){
+                    c.operation = String.valueOf(v);
+                }
+                if(v == '-'){
+                    c.operation = String.valueOf(v);
+                }
+                if(v == '*'){
+                    c.operation = String.valueOf(v);
+                }
+                if(v == '/'){
+                    c.operation = String.valueOf(v);
+                }
+            }
+            aa = input.split("[+\\-*/]");
+            return c.calculation(aa[0],aa[1],c.operation);
+        }
+        return c.calculation(aa[0], aa[2],aa[1]);
 
+    }
     static class Calc{
         int a;
         int b;
@@ -117,21 +62,107 @@ public class Main {
         boolean arabic1;
         boolean arabic2;
 
-        int sum(){
-            int result = a + b;
+        String calculation(String one, String two, String op){
+            String result;
+            try {
+                a = Integer.parseInt(one.trim());
+                arabic1 = true;
+            } catch (NumberFormatException e) {
+                arabic1 = false;
+                switch (one){
+                    case "I" -> a = 1;
+                    case "II" -> a = 2;
+                    case "III" -> a = 3;
+                    case "IV" -> a = 4;
+                    case "V" -> a = 5;
+                    case "VI" -> a = 6;
+                    case "VII" -> a = 7;
+                    case "VIII" -> a = 8;
+                    case "IX" -> a = 9;
+                    case "X" -> a = 10;
+                    default -> throw e;
+                }
+            }
+            try{
+                b = Integer.parseInt(two.trim());
+                arabic2 = true;
+            } catch (NumberFormatException e) {
+                arabic2 = false;
+                switch (two){
+                    case "I" -> b = 1;
+                    case "II" -> b = 2;
+                    case "III" -> b = 3;
+                    case "IV" ->b = 4;
+                    case "V" ->b = 5;
+                    case "VI" -> b = 6;
+                    case "VII" -> b = 7;
+                    case "VIII" -> b = 8;
+                    case "IX" -> b = 9;
+                    case "X" -> b = 10;
+                    default -> throw e;
+                }
+            }
+            if (arabic1^arabic2){
+                try {
+                    throw new Exception();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            operation = op;
+            if (a > 0 & a <= 10 & b > 0 & b <= 10) {
+                switch (operation) {
+                    case "+" -> {
+                        if (arabic1 & arabic2) {
+                            result = Integer.toString(sum());
+                        } else {
+                            result = convert(sum());
+                        }
+                    }
+                    case "-" -> {
+                        if (arabic1 & arabic2) {
+                            result = Integer.toString(deduct());
+                        } else {
+                            result = convert(deduct());
+                        }
+                    }
+                    case "/" -> {
+                        if (arabic1 & arabic2) {
+                            result = Integer.toString(division());
+                        } else {
+                            result = convert(division());
+                        }
+                    }
+                    case "*" -> {
+                        if (arabic1 & arabic2) {
+                            result = Integer.toString(mult());
+                        } else {
+                            result = convert(mult());
+                        }
+                    }
+                    default -> throw new IllegalStateException("Unexpected value: " + operation);
+                }
+            } else {
+                try {
+                    throw new Exception();
+                } catch (Exception e) {
+                    throw new IllegalStateException();
+                }
+            }
             return result;
+        }
+        int sum(){
+            return a + b;
         }
         int deduct(){
-            int result = a - b;
-            return result;
+            return a - b;
         }
         int mult(){
-            int result = a * b;
-            return result;
+            return a * b;
         }
         int division(){
-            int result = a / b;
-            return result;
+            return a / b;
         }
 
 
@@ -153,10 +184,9 @@ public class Main {
         String romanThousands = romanDigit(number % 10, "M", "", "");
         number /= 10;
 
-        String result = romanThousands + romanHundreds + romanTens + romanOnes;
-        return result;
+        return romanThousands + romanHundreds + romanTens + romanOnes;
     }
-     public static String romanDigit(int n, String one, String five, String ten){
+    public static String romanDigit(int n, String one, String five, String ten){
 
         if(n >= 1)
         {

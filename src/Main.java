@@ -136,9 +136,9 @@ public class Main {
                     }
                     case "*" -> {
                         if (arabic1 & arabic2) {
-                            result = Integer.toString(mult());
+                            result = Integer.toString(multiplication());
                         } else {
-                            result = convert(mult());
+                            result = convert(multiplication());
                         }
                     }
                     default -> throw new IllegalStateException("Unexpected value: " + operation);
@@ -158,7 +158,7 @@ public class Main {
         int deduct(){
             return a - b;
         }
-        int mult(){
+        int multiplication(){
             return a * b;
         }
         int division(){
@@ -182,7 +182,6 @@ public class Main {
         number /= 10;
 
         String romanThousands = romanDigit(number % 10, "M", "", "");
-        number /= 10;
 
         return romanThousands + romanHundreds + romanTens + romanOnes;
     }

@@ -1,12 +1,10 @@
 import java.util.Scanner;
 
 public class Main {
-
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         System.out.println(calc(in.nextLine()));
     }
-
     public static String calc(String input){
         Calc c = new Calc();
 
@@ -55,6 +53,4 @@ public class Main {
         return c.calculation(aa[0], aa[2],aa[1]);
 
     }
-
-
 }
